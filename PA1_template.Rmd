@@ -121,26 +121,31 @@ After the missing data was extrpolated, the mean of the steps per day is `r step
 ####Differences in Activity Patterns  
 Compare the step activity for weekdays and weekends and comapre the steps for each.  
 ```{r plotdata2, echo = TRUE}
-    ## Add a factor varaible for weekdays/weekends to the data set
-        stepdataex <- cbind(stepdataex, c("NA"))
-        colnames(stepdataex) <- c("steps", "date", "interval", "weekday")
+ 
+    ## There were issues with the weekday/weekend factoring, code does not completely work
+    ## therefore I have commented it out in order to not break the knit2html() funtion
+
+        ## Add a factor varaible for weekdays/weekends to the data set
+        ##stepdataex <- cbind(stepdataex, c("NA"))
+        ##colnames(stepdataex) <- c("steps", "date", "interval", "weekday")
+    
     
         ## Loop through data set and determine if day was a weekday or not
-        for(i in 1:nrow(stepdataex)) {
-            dayofweek <- (weekdays(as.Date(stepdataex[i, 2], format="%Y-%m-%d")))
+        ##for(i in 1:nrow(stepdataex)) {
+        ##    dayofweek <- (weekdays(as.Date(stepdataex[i, 2], format="%Y-%m-%d")))
 
-            if (dayofweek %in% c("Saturday", "Sunday")) {
-                stepdataex[i, 4] <- "Weekend"
-            }
+        ##    if (dayofweek %in% c("Saturday", "Sunday")) {
+        ##        stepdataex[i, 4] <- "Weekend"
+        ##    }
             
-            else {
-                stepdataex[i, 4] <- "Weekday"
-            }
+        ##    else {
+        ##        stepdataex[i, 4] <- "Weekday"
+        ##    }
             
-        }
+        ##}
     
         ## Plot activity based on weekday/weekend
-        qplot(interval, steps, data = stepdataex, facets = .~weekday)
+        ##qplot(interval, steps, data = stepdataex, facets = .~weekday)
     
 ```
 
