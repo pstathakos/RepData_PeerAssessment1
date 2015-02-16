@@ -10,8 +10,8 @@ The purpose of this assignment is to analyse a given set of step count data usin
 
 ####Loading and Processing the Data  
 Load the data into a data frame and transform the data as required for the analysis.  
-```{r loaddata, echo = TRUE}
 
+```r
     library(plyr)
     library(dplyr)
     library(ggplot2)
@@ -32,61 +32,84 @@ Load the data into a data frame and transform the data as required for the analy
   
     ## Plot histogram of the total steps by day
     hist(stepsum$totalsteps, col = "blue4", main = "Steps Per Day", xlab = "Total Steps")
-
 ```
+
+![plot of chunk loaddata](figure/loaddata-1.png) 
 
 
 
 ####Mean and Median Steps Per Day  
 Calculate the total, mean, and median steps for each day.  
-```{r averagesteps, echo = TRUE}
+
+```r
     ##  Sort stepsum to obtain the median
     stepsumsorted <- sort(stepsum$totalsteps)
     
     ## Calculate the mean and median values
     stepmean <- summarize(byday, meansteps=mean(steps))
     stepmedian <- median(stepsumsorted)
-
 ```
-The mean of the steps per day is `r stepmean`, and the median of the steps per day is `r stepmedian`.  
+The mean of the steps per day is 37.3825996, and the median of the steps per day is 10765.  
 
 
 
 ####Average Daily Activity Pattern  
 Plot the daily activity pattern.  
-```{r plotdata1, echo = TRUE}
 
+```r
         ## Calculate average setps by interval
         intervalmean <- ddply(stepdatasub, "interval", summarize, stepmean = mean(steps))
-    
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'interval' not found
+```
+
+```r
         ## Plot steps by interval
         ggplot(data = intervalmean, aes(x=interval, y=stepmean)) + geom_point() +
             xlab("Interval") +
             ylab("Mean Steps") +
             ggtitle("Average Daily Steps by 5 Minute Interval")
+```
 
+![plot of chunk plotdata1](figure/plotdata1-1.png) 
+
+```r
         ## Find interval with the maximum mean steps
         intervalmeansorted <- arrange(intervalmean, desc(stepmean))
         maxmeanstepinterval <- intervalmeansorted[1,1]
-
 ```
-The interval with the maximum number of steps across all of the days is `r maxmeanstepinterval`.
+The interval with the maximum number of steps across all of the days is 835.
 
 
 
 ####Inputting Missing Values  
 Since the original data set was missing some step values, extrapolate for the missing data.    
 Then determine how this extrapolated data affects the calculations which were done above.  
-```{r missingdata, echo = TRUE}
 
+```r
         ## Calculate to total number or NA rows in the initial dataset
         nasub <- subset(stepdata, is.na(steps))
         nacount <- count(nasub$steps)
         print(nacount[2])
-    
+```
+
+```
+##   freq
+## 1 2304
+```
+
+```r
         ## Calculate the mean value for each interval
         intervalmean <- ddply(stepdatasub, "interval", summarize, stepmean = mean(steps))
-    
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'interval' not found
+```
+
+```r
         ## Merge the interval mean with the orignal data set to obtain the mean values by interval
         stepdataex <- merge(stepdata, intervalmean, by = "interval")
     
@@ -105,25 +128,24 @@ Then determine how this extrapolated data affects the calculations which were do
         
         ## Plot histogram of the total steps by day
         hist(stepsumex$totalsteps, col = "blue4", main = "Steps Per Day", xlab = "Total Steps")
-        
+```
+
+![plot of chunk missingdata](figure/missingdata-1.png) 
+
+```r
         ##  Sort stepsum to obtain the median
         stepsumexsorted <- sort(stepsumex$totalsteps)
         
         ##stepmean <- mean(stepsum$totalsteps)
         stepmeanex<- summarize(byday, meansteps=mean(steps))
         stepmedianex <- median(stepsumexsorted)
-        
 ```
-After the missing data was extrpolated, the mean of the steps per day is `r stepmeanex`, and the median of the steps per day is `r stepmedianex`.  
+After the missing data was extrpolated, the mean of the steps per day is 37.3825996, and the median of the steps per day is 1.0766189 &times; 10<sup>4</sup>.  
 
 
 
 ####Differences in Activity Patterns  
 Compare the step activity for weekdays and weekends and comapre the steps for each.  
-```{r plotdata2, echo = TRUE}
 
-
-
-```
 
 
